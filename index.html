@@ -1,0 +1,108 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chuyển đổi dữ liệu</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    body {
+      padding: 20px;
+    }
+
+    .converter-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .textarea-container {
+      position: relative;
+    }
+
+    .textarea-container textarea {
+      width: 100%;
+      height: 200px;
+      resize: none;
+    }
+
+    .textarea-container .icon-buttons {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+
+    .icon-buttons i {
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .btn-container {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .btn-container .btn {
+      margin: 0 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="converter-container">
+    <div class="mb-3">
+      <label for="input-scss" class="form-label">Nhập dữ liệu</label>
+      <div class="textarea-container">
+        <textarea id="input-scss" class="form-control" placeholder="Nhập dữ liệu của bạn..."></textarea>
+        <div class="icon-buttons">
+          <i class="fas fa-trash" style="color: red;"></i>
+        </div>
+      </div>
+    </div>
+    <div class="btn-container">
+      <button class="btn btn-success">Chuyển đổi</button>
+    </div>
+    <div class="mb-3">
+      <label for="output-css" class="form-label">Dữ liệu ra</label>
+      <div class="textarea-container">
+        <textarea id="output-css" class="form-control"></textarea>
+        <div class="icon-buttons">
+          <i class="fas fa-copy" style="color: blue;"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+3i5q5Y5hb7ie1Ff/nx0x0x18+4J" crossorigin="anonymous"></script>
+</body>
+
+<script>
+  const inputScss = document.getElementById("input-scss");
+  const outputCss = document.getElementById("output-css");
+  const convertButton = document.querySelector(".btn-container .btn");
+  const trashIcon = document.querySelector(".fas.fa-trash");
+  const copyIcon = document.querySelector(".fas.fa-copy");
+
+  convertButton.addEventListener("click", () => {
+    const inputText = inputScss.value;
+    const links = inputText.split(/(?=https?:\/\/)/g).filter(link => /^(https?:\/\/)/.test(link));
+    const uniqueLinks = Array.from(new Set(links.map(link => link.trim())));
+    const outputText = uniqueLinks.join("\n");
+
+    outputCss.value = outputText;
+  });
+
+  trashIcon.addEventListener("click", () => {
+    inputScss.value = "";
+  });
+
+  copyIcon.addEventListener("click", () => {
+    navigator.clipboard.writeText(outputCss.value).then(() => {
+    }).catch(err => {
+      console.error("Could not copy text: ", err);
+    });
+  });
+</script>
+
+</html>
